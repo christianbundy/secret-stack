@@ -1,7 +1,4 @@
-
-
-
-
+console.log("TEST/CLOSE")
 var pull = require('pull-stream')
 //a simple flooding protocol
 var Illuminati = require('../')
@@ -36,25 +33,27 @@ var create = Illuminati({
   }
 })
 function createPeer(name) {
-  var alice = create({seed: seeds[name]})
-  return alice.on('flood:message', function (msg) {
-    console.log(name, 'received', msg)
-  })
+  return create({seed: seeds[name]})
 }
 
 var alice = createPeer('alice')
 var bob   = createPeer('bob')
 var carol = createPeer('carol')
 
+
+console.log(alice.address())
 bob.connect(alice.address(), function (err, rpc) {
+  console.log("CONNECT 1", err)
   if(err) throw err
   var n = 2
   rpc.testSource()
   rpc.once('closed', next)
   alice.connect(carol.address(), function (err, rpc) {
+    console.log("CONNECT 2", err)
+    if(err) throw err
     rpc.once('closed', next)
     alice.close(true)
-    rpc.testSource()
+  //  rpc.testSource()
   })
 
   function next () {
@@ -65,4 +64,3 @@ bob.connect(alice.address(), function (err, rpc) {
     carol.close()
   }
 })
-
