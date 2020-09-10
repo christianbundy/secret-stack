@@ -9,7 +9,6 @@ import {
 } from './types'
 const Muxrpc = require('muxrpc')
 const pull = require('pull-stream')
-// const Rate = require('pull-rate')
 const MultiServer = require('multiserver')
 const Inactive = require('pull-inactivity')
 const debug = require('debug')('secret-stack')
